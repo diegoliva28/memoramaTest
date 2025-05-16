@@ -1,0 +1,89 @@
+body{
+    margin: 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+#wrapper{
+    height: 100vh;
+    /* Averiguar que es VH */
+    /* vh: Es la medida de lo que se ve por pantalla */
+
+    /* Aca es para mostrarse las cartas */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#game{
+    height: 100vh;
+    max-width: 700px;
+    /* No me incrementa el ancho pero marca el limite de lo que puede crecer la etiqueta */
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#stats{
+    color: white;
+    position: absolute;
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+    font-size: 2rem;
+}
+
+.card{
+    width: 100px;
+    height: 140px;
+    margin: 1rem;
+    position: relative;
+    /* ?? */
+    transition: transform 0.5s;
+    /* Indico la transformacion y la duracion */
+
+    transform-style: preserve-3d;
+    /* Preguntar transform-style: preserve-3d*/
+}
+
+.card.active{
+    /* Aplico el efecto de transformacion  */
+    transform: rotateY(180deg);
+}
+
+/* Asi hago referencia a los hijos */
+.card div{
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+
+    backface-visibility: hidden;
+    /* Averiguar */
+    pointer-events: none;
+    /* Averiguar */
+}
+
+.card .face{
+    background-color: purple;
+    transform: rotateY(180deg);
+    color: white;
+    font-size: 6rem;
+}
+
+.card .back{
+    border: 5px solid purple;
+    /* background: url() center / contain no-repeat; */
+    /* Acá agregamos imagenes a la parte de atras */
+}
+/* .card:hover{
+    transform: rotateY(180deg);
+} */
