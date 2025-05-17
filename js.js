@@ -1,31 +1,61 @@
 const totalCartas=12;
 let cartas=[];
 //Es un arreglo de divs
-let tarjetasSeleccionadas=[];
-let valoresUsados=[];
+let tarjetasSeleccionadas=[]; //mano
 let movimientoActual=0;
-let intentos=0;
 
+let timer=60;
+let controlarTiempo;
+let primeraVez=false;
 
+let valoresUsados=[];
+
+let etiquetaBtn=document.querySelector(".btn");
+let etiquetaTiempo=document.querySelector("#stats");
 let cartasTemplate='<div class="card"><div class="back"></div><div class="face"></div></div>';
+
 
 //Esta funcion recibe el evento del elemento del DOM
 
-function active(evento) {
-    if (movimientoActual<2) {
-        //no la entendi TARGET
-        //Se puede captura eventos?
-        
-        if(!tarjetasSeleccionadas[0] || tarjetasSeleccionadas[0]!=evento.target 
-            && !evento.target.classList.contains("active")
-        ){
-            // E.target. es distinto a la carta seleccionada
-        evento.target.classList.add("active");
-          tarjetasSeleccionadas.push(evento.target);
-          if(++movimientoActual==2){
+ function deshabilitarCartas() {
+     let cartasTotales=document.querySelectorAll(".card");
+     console.log(cartasTotales.length);
+    
+     for (let i = 0; i < cartasTotales.length; i++) {
+         cartasTotales[i].classList.add("disable")
+    }
+}
 
-            // intentos++;
-            // document.querySelector("stats").innerHTML=intentos+ " intentos";
+function ejecutarTiempo() {
+    controlarTiempo=setInterval(()=> {
+        timer--;
+        etiquetaTiempo.innerHTML=`Tiempo: ${timer} restante`;
+        if(timer==0){
+            clearInterval(controlarTiempo);
+            etiquetaTiempo.innerHTML="Perdiste";
+            etiquetaBtn.style.visibility=("visible");
+            etiquetaBtn.innerHTML="Reintentar";
+            deshabilitarCartas();
+        }
+    },1000)
+}
+
+function active(carteElegida) {
+    //Captura la carta sobre la que se toco el evento
+    // carteElegida.target El elemento especifico que fue clickeado
+    if (!primeraVez) {
+        ejecutarTiempo();
+        primeraVez=true;
+    }
+    
+    if (movimientoActual<2) {
+        if(!tarjetasSeleccionadas[0] || //Si la carta 1 no esta puesta
+            tarjetasSeleccionadas[0]!=carteElegida.target  && // que no sea igual a la primera carta
+            !carteElegida.target.classList.contains("active")){ //que no este activada la carta elegida
+            // E.target. es distinto a la carta seleccionada
+            carteElegida.target.classList.add("active");
+            tarjetasSeleccionadas.push(carteElegida.target);
+          if(++movimientoActual==2){
 
             if(tarjetasSeleccionadas[0].querySelectorAll(".face")[0].innerHTML==tarjetasSeleccionadas[1].querySelectorAll(".face")[0].innerHTML){
                 tarjetasSeleccionadas=[];
@@ -37,25 +67,24 @@ function active(evento) {
                     tarjetasSeleccionadas[1].classList.remove("active");
                     tarjetasSeleccionadas=[];
                     movimientoActual=0;    
-                },600)
+                },400)
             };
           }  
         }
-    }    
-}
-
-for (let i = 0; i < totalCartas; i++) {
-    let div= document.createElement('div');
-    //Creo el div
-    div.innerHTML=cartasTemplate;
-    //Atribuyo las variables
-    cartas.push(div);
-    document.querySelector("#game").append(cartas[i]);
-    // Append averiguar
-
-    randomValue();
-    cartas[i].querySelectorAll(".face")[0].innerHTML=valoresUsados[i];
-    cartas[i].querySelectorAll(".card")[0].addEventListener("click",active);
+    }   
+    finalizaPartida();    
+    }
+    
+    
+function finalizaPartida() {
+    let activadas=document.querySelectorAll(".active").length;
+    if(activadas==12){
+        let tiempoConseguido=timer;
+        clearInterval(controlarTiempo);
+        etiquetaTiempo.innerHTML=`Ganaste: En ${timer} segundos`;
+        etiquetaBtn.style.visibility=("visible");
+        etiquetaBtn.innerHTML="Continuar";
+    }
 }
 
 function randomValue() {
@@ -68,4 +97,19 @@ function randomValue() {
         randomValue();
         //Recursion
     }
+}
+
+for (let i = 0; i < totalCartas; i++) {
+    let div= document.createElement('div');
+    //Creo el div
+    div.innerHTML=cartasTemplate;
+    //Atribuyo las variables
+    cartas.push(div);
+    //aca agrego la carta(div)
+    document.querySelector("#game").append(cartas[i]);
+    // Append averiguar
+
+    randomValue();
+    cartas[i].querySelectorAll(".face")[0].innerHTML=valoresUsados[i];
+    cartas[i].querySelectorAll(".card")[0].addEventListener("click",active);
 }

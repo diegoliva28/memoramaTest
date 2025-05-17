@@ -4,37 +4,48 @@ body{
     background-color: black;
 }
 
-#wrapper{
-    height: 100vh;
-    /* Averiguar que es VH */
-    /* vh: Es la medida de lo que se ve por pantalla */
-
-    /* Aca es para mostrarse las cartas */
+.estadisticas{
+    padding: 20px 0 0 0;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
+}
+
+#stats{
+    color: white;
+    font-size: 2rem;
+}
+
+.btn{
+    width: 170px;
+    padding: 10px;
+    font-size: 1.5rem;
+    border:solid 2px black;
+    border-radius: 1em;
+    background-color: purple;
+    color: white;
+    text-decoration: none;
+    visibility: hidden;
+    text-align: center;
+}
+
+#wrapper{
+    height: 80vh;
+    display: flex; 
+    flex-direction: column; 
+    flex-wrap: wrap; 
+    align-items: center; 
     justify-content: space-evenly;
 }
 
 #game{
     height: 100vh;
     max-width: 700px;
-    /* No me incrementa el ancho pero marca el limite de lo que puede crecer la etiqueta */
-
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: center;
-}
-
-#stats{
-    color: white;
-    position: absolute;
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
-    font-size: 2rem;
 }
 
 .card{
@@ -42,17 +53,15 @@ body{
     height: 140px;
     margin: 1rem;
     position: relative;
-    /* ?? */
+    /* Es lo que me permite generar el efecto de volteo */
     transition: transform 0.5s;
-    /* Indico la transformacion y la duracion */
 
     transform-style: preserve-3d;
     /* Preguntar transform-style: preserve-3d*/
 }
 
 .card.active{
-    /* Aplico el efecto de transformacion  */
-    transform: rotateY(180deg);
+     transform: rotateY(180deg);
 }
 
 /* Asi hago referencia a los hijos */
@@ -84,6 +93,7 @@ body{
     /* background: url() center / contain no-repeat; */
     /* Acá agregamos imagenes a la parte de atras */
 }
-/* .card:hover{
-    transform: rotateY(180deg);
-} */
+
+.disable{
+    pointer-events: none;
+}
